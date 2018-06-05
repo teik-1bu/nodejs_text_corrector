@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Text Corrector</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
+    crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
+    crossorigin="anonymous"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+
+  <script type="text/javascript">
+
+    $(document).ready(function () {
+
+      $("#accuracy").click(function () {
+        var $this = $(this);
+        var loadingText = '<i class="fa fa-circle-o-notch fa-spin"></i> loading...';
+        if ($(this).html() !== loadingText) {
+          $this.data('original-text', $(this).html());
+          $this.html(loadingText);
+        }
+        $.ajax({
+          type: 'GET',
+          url: "http://localhost:3000/accuracy",
+          success: function (data) {
+            var json = data;
+            var html = `<tr>
+                          <th scope="row">Bucket 0: (10, 10)</th>
+                          <td>${json['Bucket 0: (10, 10)']}</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">Bucket 1: (15, 15)</th>
+                          <td>${json['Bucket 1: (15, 15)']}</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">Bucket 2: (20, 20)</th>
+                          <td>${json['Bucket 2: (20, 20)']}</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">Bucket 3: (40, 40)</th>
+                          <td>${json['Bucket 3: (40, 40)']}</td>
+                        </tr>`;
+            $("#myTable tbody").append(html);
+            $this.html($this.data('original-text'));
+          }
+        });
+      });
+    });
+  </script>
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-12 heading">Final Project: Text Corrector</div>
+    </div>
+    <div class="row content">
+      <div class="col-12">
+        <form action="/" method="POST">
+          <div class="form-group">
+            <label for="inputText">Input Text</label>
+            <input type="text" class="form-control" id="inputText" placeholder="Enter text" name="text">
+          </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+          <button type="button" class="btn btn-primary" id="accuracy" style="margin-left: 10px">Get Accuracy</button>
+          <div class="form-group">
+            <label for="resultText"></label>
+            <div id="resultText">
+              <div>
+                Input Text :
+                <%= encode %>
+              </div>
+              <br>
+              <div>
+                Output Text:
+                <%= decoded %>
+              </div>
+            </div>
+          </div>
+        </form>
+        <div class="col-12" style="text-align: center">
+          <table class="table" id="myTable">
+            <thead>
+              <tr>
+                <th scope="col">Bucket</th>
+                <th scope="col">Model Accuracy</th>
+              </tr>
+            </thead>
+            <tbody id="mybody">
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="page-footer font-small blue pt-4 mt-4">
+
+    <!-- Footer Links -->
+    <div class="container-fluid text-center text-md-left">
+
+      <!-- Grid row -->
+      <div class="row">
+
+        <!-- Grid column -->
+        <div class="col-md-6 mt-md-0 mt-3">
+
+          <!-- Content -->
+          <h5 class="text-uppercase">Deep Learning</h5>
+          <p>ADVISOR: VU QUANG HUY, Ph.D</p>
+        </div>
+        <!-- Grid column -->
+
+        <hr class="clearfix w-100 d-md-none pb-3">
+
+        <!-- Grid column -->
+        <div class="col-md-6 mb-md-0 mb-3" style="padding-left: 500px">
+
+          <h5 class="text-uppercase">Group 03</h5>
+          <p>14110348 - Nguyen Tuan Kiet</p>
+          <p>14110385 - Duong Ngoc Hao</p>
+          <p>14110422 - Nguyen Quoc Tinh</p>
+
+        </div>
+        <!-- Grid column -->
+
+      </div>
+      <!-- Grid row -->
+
+    </div>
+    <!-- Footer Links -->
+  </footer>
+
+</body>
+
+</html>
